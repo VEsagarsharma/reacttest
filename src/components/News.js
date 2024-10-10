@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import NewsItem from './NewsItem'
 import Spinner from './Spinner';
 import PropTypes from 'prop-types';
@@ -19,19 +19,19 @@ const News = (props)=> {
 
   // Ref to track the initial load
   const firstRender = useRef(true);
-  // const capitalizeFirstLetter = (string) => {
-  //   return string.charAt(0).toUpperCase() + string.slice(1);
-  // }
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
     // props.setProgress(0);
-    // document.title = this.capitalizeFirstLetter(props.category) + " News Monkey";
+    
     
  
   // this function will call after render
  
 
   useEffect(()=>{
-    
+    document.title = capitalizeFirstLetter(props.category) + " News Monkey";
     if (firstRender.current) {
       updateNews();
       firstRender.current = false; // Set to false after the first execution
@@ -42,6 +42,7 @@ const News = (props)=> {
   const updateNews = async ()=> {
     props.setProgress(10);
     let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&cateogry=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+    setPage(page+1);
     let data = await fetch(url);
     props.setProgress(30);
     let parsedData = await data.json();
@@ -57,12 +58,13 @@ const News = (props)=> {
   const fetchMoreData = async () => {
     props.setProgress(0);
     // Use a function to update the page state based on the previous value
-    setPage(prevPage => prevPage + 1);
+    //setPage(prevPage => prevPage + 1);
 
   // Ensure that the updated page value is used after setting the state
-      let nextPage = page + 1;  // Calculate the next page manually
+     // let nextPage = page + 1;  // Calculate the next page manually
 
-      let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&cateogry=${props.category}&apiKey=${props.apiKey}&page=${nextPage}&pageSize=${props.pageSize}`;
+      let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&cateogry=${props.category}&apiKey=${props.apiKey}&page=${page}&pageSize=${props.pageSize}`;
+      setPage(page+1);
       let data = await fetch(url);
       let parsedData = await data.json();
       setArticles(articles.concat(parsedData.articles));
@@ -70,7 +72,6 @@ const News = (props)=> {
     setTotalresult(parsedData.totalResults);
     props.setProgress(100);  
   };
-  
     return (
       <>
         <h1>News headline</h1>
