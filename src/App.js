@@ -14,17 +14,17 @@ import {
 
 export default class App extends Component {
 
-  apiKey = process.env.REACT_API_NEWS_API;
+  apiKey = process.env.REACT_APP_NEWS_API;
+  
   state = {
     progress : 0
   }
-  setProgress = (progress) => {
+  setProgress = (progress) => { 
     this.setState({
       progress: progress
     })
   }
   render() {
-
     return (
       <div>
       <Router>
